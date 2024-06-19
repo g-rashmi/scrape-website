@@ -4,7 +4,7 @@ import CompanyTable from './companytable';
 import { useNavigate } from 'react-router-dom';
 import { Search as SearchIcon } from '@mui/icons-material';
 import axios from 'axios';
-
+import {backend_url} from './config'
 const Navbar = ({d,show}) => {
   const [domain, setDomain] = useState(d); 
   const [loading, setLoading] = useState(false);
@@ -16,7 +16,7 @@ const Navbar = ({d,show}) => {
 
         useEffect(() => {
           axios
-            .get(`http://localhost:4000/api/bulk?filter=` + domain)
+            .get(`${backend_url}/api/bulk?filter=` + domain)
             .then((response) => {
               setCompanies(response.data.companies);
             });
@@ -26,7 +26,7 @@ const Navbar = ({d,show}) => {
         const handleFetchData = async () => {  setLoading(true); 
           try {
            
- const response = await axios.post("http://localhost:4000/api/scrape", { domain });
+ const response = await axios.post(`${backend_url}/api/scrape`, { domain });
  setLoading(false); // Set loading to false immediately upon successful response
  navigate(`/singlecompany/${response.data.companyid}`);
  setDomain("")
@@ -44,7 +44,7 @@ const Navbar = ({d,show}) => {
         };
   const handleDelete = async (deleteIds) => {
     try {
-      await axios.post('http://localhost:4000/api/delete', { ids: deleteIds });
+      await axios.post(`${backend_url}/api/delete`, { ids: deleteIds });
       
       // Update state in the Navbar component
       setCompanies(prevCompanies =>

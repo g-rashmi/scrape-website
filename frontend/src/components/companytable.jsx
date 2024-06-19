@@ -4,6 +4,7 @@ import { FaTwitter } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import axios from "axios";
 import { FaLinkedin, FaInstagram } from "react-icons/fa";
+import { backend_url } from './config';
 import CompanyActions from './mid'; // Assuming correct import path for CompanyActions
 
 const CompanyTable = ({ companies, onDelete }) => {
@@ -59,7 +60,7 @@ const CompanyTable = ({ companies, onDelete }) => {
 
       // Fetch details for each selected company ID
       for (const id of selectedCompanyIds) {
-        const response = await axios.get(`http://localhost:4000/api/company/${id}`);
+        const response = await axios.get(`${backend_url}/api/company/${id}`);
         const company = response.data.company; // Assuming your API response structure
 
         csvRows.push([company.domain, company.name, company.description]);
@@ -115,7 +116,7 @@ const CompanyTable = ({ companies, onDelete }) => {
           <TableBody style={{height:"55px"}}>
             {companies.slice(indexOfFirstCompany, indexOfLastCompany).map((company) => (
               <TableRow key={company._id} style={{height:"55px",}} >
-                <TableCell style={{height:"45px"}}>
+                <TableCell style={{height:"5px"}}>
                   <Checkbox
                     checked={selectedCompanyIds.includes(company._id)}
                     onChange={(event) => handleCheckboxChange(event, company._id)}
