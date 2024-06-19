@@ -55,25 +55,25 @@ const Navbar = ({d,show}) => {
     }
   };
   return (
-    <div>
-    <AppBar position="static">
+    <div >
+    <AppBar position="static" style={{backgroundColor:"#FFFFFF"}}>
     <Toolbar>
       <TextField
         variant="outlined"
-        placeholder="Enter domain name"
-        value={domain}
+        placeholder="Enter domain name" value={domain}
         onChange={handleDomainChange}
         sx={{ mr: 1, p: 2 }}
+       
         InputProps={{
           endAdornment: (
             <IconButton>
-              <SearchIcon style={{ color: '#FFFFFF' }} />
+              <SearchIcon style={{ color: 'grey' }} />
             </IconButton>
           ),
-          style: { color: '#FFFFFF' }
+          style: { color: 'gray', backgroundColor:"#E5E7EB"}
         }}
       />
-      <Button variant="contained" color="secondary" onClick={handleFetchData} disabled={loading}>
+      <Button variant="contained"  style={{backgroundColor:"#EDE5FF",color:"#6C2BD9"}} onClick={handleFetchData} disabled={loading}>
       {loading ? <CircularProgress size={24} /> : 'Fetch & Save Details'}
     </Button>
     </Toolbar>
@@ -86,7 +86,7 @@ const Navbar = ({d,show}) => {
   ) : (
     show && <CompanyTable companies={companies} onDelete={handleDelete} />
   )} 
-  
+
   </div>
   
   );

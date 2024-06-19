@@ -1,7 +1,8 @@
-import { useState } from 'react';
+
 import { Button, Typography } from '@mui/material';
-import { Delete as DeleteIcon, GetApp as GetAppIcon } from '@mui/icons-material';
+
 import { CSVLink } from 'react-csv';
+import { LuListPlus } from "react-icons/lu";
 
 const CompanyActions = ({ selectedCount, onDelete, generateCSVData, csvData }) => {
   return (
@@ -10,9 +11,9 @@ const CompanyActions = ({ selectedCount, onDelete, generateCSVData, csvData }) =
         {selectedCount} selected
       </Typography>
       <Button
+      color="secondary"
         variant="contained"
-        color="secondary"
-        startIcon={<DeleteIcon />}
+       
         onClick={onDelete}
         disabled={selectedCount === 0}
       >
@@ -21,7 +22,8 @@ const CompanyActions = ({ selectedCount, onDelete, generateCSVData, csvData }) =
       <Button
         variant="contained"
         color="primary"
-        startIcon={<GetAppIcon />}
+        
+        
         onClick={generateCSVData}
         disabled={selectedCount === 0}
       >
@@ -31,7 +33,7 @@ const CompanyActions = ({ selectedCount, onDelete, generateCSVData, csvData }) =
           target="_blank"
           style={{ textDecoration: 'none', color: 'inherit' }}
         >
-          Export as CSV
+        {<LuListPlus/>} Export as CSV
         </CSVLink>
       </Button>
     </div>

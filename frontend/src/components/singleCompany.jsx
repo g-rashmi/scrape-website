@@ -1,22 +1,16 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Typography, Grid, Paper, Divider, CircularProgress, IconButton } from '@mui/material';
-import Navbar from "../components/Navbar"
+import { IoMdInformationCircleOutline } from "react-icons/io";
+import { LuMailSearch, LuPhoneCall, LuGlobe2, LuLinkedin } from "react-icons/lu";
+import { CiCamera } from "react-icons/ci";
+import { HiOutlineLocationMarker } from "react-icons/hi";
+import { FiFacebook, FiTwitter } from "react-icons/fi";
+import { SlSocialInstagram } from "react-icons/sl";
+import { Typography, Grid, Paper, Divider, CircularProgress } from '@mui/material';
+import Navbar from "../components/Navbar";
 import { styled } from '@mui/system';
 import axios from 'axios';
-import {
-  ArrowRight,
-  Email,
-  Phone,
-  Home,
-  Web,
-  Facebook,
-  Instagram,
-  Twitter,
-  LinkedIn,
-} from '@mui/icons-material';
-
+import { ArrowRight } from '@mui/icons-material';
 
 const StyledContainer = styled(Grid)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -25,7 +19,11 @@ const StyledContainer = styled(Grid)(({ theme }) => ({
 const Header = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
   marginBottom: theme.spacing(3),
-  textAlign: 'center',
+
+  textAlign: 'left',
+  display: 'flex',
+  flexDirection: 'column', // Changed to column layout for responsive description placement
+  alignItems: 'flex-start', // Align items to start for responsive layout
 }));
 
 const Logo = styled('img')(({ theme }) => ({
@@ -42,12 +40,31 @@ const Screenshot = styled('img')(({ theme }) => ({
 
 const DetailItem = styled(Grid)(({ theme }) => ({
   display: 'flex',
-  alignItems: 'center',
-  marginBottom: theme.spacing(1),
+  flexDirection: 'column',
+  alignItems: 'flex-start',
+  marginBottom: theme.spacing(2),
 }));
 
-const DetailIcon = styled(IconButton)(({ theme }) => ({
-  marginRight: theme.spacing(1),
+const DetailIcon = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  marginBottom: theme.spacing(1),
+  fontFamily:'Helvetica-Oblique', 
+  color:"#64748B"
+}));
+
+const DetailText = styled(Typography)(({ theme }) => ({
+  marginLeft: theme.spacing(1),
+}));
+
+const DetailBox = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(3),
+  marginBottom: theme.spacing(3),
+}));
+
+const ScreenshotBox = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(3),
+  marginBottom: theme.spacing(3),
 }));
 
 const SingleCompany = () => {
@@ -72,7 +89,7 @@ const SingleCompany = () => {
 
   if (loading) {
     return (
-      <Grid container justifyContent="center" alignItems="center" height="100vh">
+      <Grid container justifyContent="center" alignItems="center" minHeight="100vh">
         <CircularProgress />
       </Grid>
     );
@@ -87,113 +104,137 @@ const SingleCompany = () => {
   }
 
   return (
-    <div>
-    <Navbar show={false}/>
+    <div style={{fontFamily:"Helvetica-Light"}}>
+      <Navbar show={false} />
       <StyledContainer container spacing={3}>
-      <Grid item xs={12}>
-      <Typography variant="h6" gutterBottom>
-        <Link to="/">Home</Link> <span>  <ArrowRight style={{ fontSize: 24, color: 'green' }} /></span> {company.name}
-
-      </Typography>
-      <Divider /> 
-     
-    </Grid>
-    <Grid item xs={12}>
-    <Header elevation={3}>
-      <Logo src={company.logo} alt="Company Logo" />
-      <Typography variant="h4" gutterBottom>
-        {company.name}
-      </Typography>
-      <Typography variant="body1" gutterBottom>
-        {company.description}
-      </Typography>
-      <DetailItem>
-        <DetailIcon>
-          <Phone />
-        </DetailIcon>
-        <Typography variant="body1">{company.phone}</Typography>
-      </DetailItem>
-      <DetailItem>
-        <DetailIcon>
-          <Email />
-        </DetailIcon>
-        <Typography variant="body1">{company.email}</Typography>
-      </DetailItem>
-    </Header>
-  </Grid>
+        <Grid item xs={12}>
+          <Typography variant="h6" gutterBottom>
+            <Link to="/">Home</Link> 
+            <ArrowRight style={{ fontSize: 24, color: 'green' }} /> 
+            {company.name}
+          </Typography>
+          <Divider />
+        </Grid>
+        <Grid item xs={12}>
+          <Header elevation={3}>
+            <Logo src={company.logo} alt="Company Logo" />
+            <div>
+              <Typography variant="h5" gutterBottom style={{fontFamily:"Helvetica-Bold"}}>
+                {company.name}
+              </Typography>
+            
+              <DetailItem>
+              <DetailIcon>
+              <IoMdInformationCircleOutline   style={{ fontSize: '1.5rem' }} />
+              <DetailText variant="subtitle2">Description</DetailText>
+            </DetailIcon>
+            <Typography variant="body1">{company.description}</Typography>
+            </DetailItem>
+            </div>
+            <DetailItem>
+              <DetailIcon>
+                <LuPhoneCall style={{ fontSize: '1.5rem' }} />
+                <DetailText variant="subtitle2">Phone</DetailText>
+              </DetailIcon>
+              <Typography variant="body1">{company.phone}</Typography>
+            </DetailItem>
+            <DetailItem>
+              <DetailIcon>
+                <LuMailSearch style={{ fontSize: '1.5rem' }} />
+                <DetailText variant="subtitle2">Email</DetailText>
+              </DetailIcon>
+              <Typography variant="body1">{company.email}</Typography>
+            </DetailItem>
+          </Header>
+        </Grid>
         
         <Grid item xs={12} md={6}>
-          <Typography variant="h6" gutterBottom>
-            Company Details
-          </Typography>
-          <DetailItem>
-            <DetailIcon>
-              <Web />
-            </DetailIcon>
-            <Typography variant="body1">
-              <a href={company.domain} target="_blank" rel="noopener noreferrer">
-                {company.domain}
-              </a>
+          <DetailBox elevation={3}>
+            <Typography variant="h5" gutterBottom style={{fontFamily:"Helvetica-Bold"}}>
+              Company Details
             </Typography>
-          </DetailItem>
-          <DetailItem>
-            <DetailIcon>
-              <Email />
-            </DetailIcon>
-            <Typography variant="body1">{company.email}</Typography>
-          </DetailItem>
-          <DetailItem>
-            <DetailIcon>
-              <Facebook />
-            </DetailIcon>
-            <Typography variant="body1">
-              <a href={company.facebook} target="_blank" rel="noopener noreferrer">
-                Facebook
-              </a>
-            </Typography>
-          </DetailItem>
-          <DetailItem>
-            <DetailIcon>
-              <Instagram />
-            </DetailIcon>
-            <Typography variant="body1">
-              <a href={company.instagram} target="_blank" rel="noopener noreferrer">
-                Instagram
-              </a>
-            </Typography>
-          </DetailItem>
-          <DetailItem>
-            <DetailIcon>
-              <Twitter />
-            </DetailIcon>
-            <Typography variant="body1">
-              <a href={company.twitter} target="_blank" rel="noopener noreferrer">
-                Twitter
-              </a>
-            </Typography>
-          </DetailItem>
-          <DetailItem>
-            <DetailIcon>
-              <LinkedIn />
-            </DetailIcon>
-            <Typography variant="body1">
-              <a href={company.linkedin} target="_blank" rel="noopener noreferrer">
-                LinkedIn
-              </a>
-            </Typography>
-          </DetailItem>
-          <DetailItem>
-            <DetailIcon>
-              <Home />
-            </DetailIcon>
-            <Typography variant="body1">{company.address}</Typography>
-          </DetailItem>
+            <DetailItem>
+              <DetailIcon>
+                <LuGlobe2 style={{ fontSize: '1.5rem' }} />
+                <DetailText variant="subtitle2">Website</DetailText>
+              </DetailIcon>
+              <Typography variant="body1">
+                <a href={company.domain} target="_blank" rel="noopener noreferrer">
+                  {company.domain}
+                </a>
+              </Typography>
+            </DetailItem>
+            <DetailItem>
+              <DetailIcon>
+                <IoMdInformationCircleOutline style={{ fontSize: '1.5rem' }} />
+                <DetailText variant="subtitle2">Description</DetailText>
+              </DetailIcon>
+              <Typography variant="body1">
+                {company.description}
+              </Typography>
+            </DetailItem>
+            <DetailItem>
+              <DetailIcon>
+                <HiOutlineLocationMarker style={{ fontSize: '1.5rem' }} />
+                <DetailText variant="subtitle2">Address</DetailText>
+              </DetailIcon>
+              <Typography variant="body1">{company.address}</Typography>
+            </DetailItem>
+            <DetailItem>
+              <DetailIcon>
+                <FiFacebook style={{ fontSize: '1.5rem' }} />
+                <DetailText variant="subtitle2">Facebook</DetailText>
+              </DetailIcon>
+              <Typography variant="body1">
+                <a href={company.facebook} target="_blank" rel="noopener noreferrer">
+                  Facebook
+                </a>
+              </Typography>
+            </DetailItem>
+            <DetailItem>
+              <DetailIcon>
+                <SlSocialInstagram style={{ fontSize: '1.5rem' }} />
+                <DetailText variant="subtitle2">Instagram</DetailText>
+              </DetailIcon>
+              <Typography variant="body1">
+                <a href={company.instagram} target="_blank" rel="noopener noreferrer">
+                  Instagram
+                </a>
+              </Typography>
+            </DetailItem>
+            <DetailItem>
+              <DetailIcon>
+                <FiTwitter style={{ fontSize: '1.5rem' }} />
+                <DetailText variant="subtitle2">Twitter</DetailText>
+              </DetailIcon>
+              <Typography variant="body1">
+                <a href={company.twitter} target="_blank" rel="noopener noreferrer">
+                  Twitter
+                </a>
+              </Typography>
+            </DetailItem>
+            <DetailItem>
+              <DetailIcon>
+                <LuLinkedin style={{ fontSize: '1.5rem' }} />
+                <DetailText variant="subtitle2">LinkedIn</DetailText>
+              </DetailIcon>
+              <Typography variant="body1">
+                <a href={company.linkedin} target="_blank" rel="noopener noreferrer">
+                  LinkedIn
+                </a>
+              </Typography>
+            </DetailItem>
+          </DetailBox>
         </Grid>
+        
         <Grid item xs={12} md={6}>
-          <Typography variant="h6" gutterBottom>
-            Screenshot
-          </Typography>
-          <Screenshot src={company.screenshot} alt="Company Screenshot" />
+          <ScreenshotBox elevation={3}>
+            <Typography variant="h5" gutterBottom style={{ display: "flex", gap: "10px", alignItems: "center",fontFamily:"Helvetica-Light" }}>
+              <CiCamera style={{ color: "#64748B", fontSize: "2rem" }} />
+              <span style={{fontFamily:"Helvetica-Bold"}}>Screenshot of Webpage</span>
+            </Typography>
+            <Screenshot src={company.screenshot} alt="Company Screenshot" />
+          </ScreenshotBox>
         </Grid>
       </StyledContainer>
     </div>

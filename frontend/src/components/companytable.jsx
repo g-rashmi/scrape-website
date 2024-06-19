@@ -1,13 +1,12 @@
+import { useState, useEffect } from 'react';
 import { Table, TableContainer, TableHead, TableRow, TableCell, TableBody, Paper, Checkbox } from '@mui/material';
-import { FaSquareXTwitter } from "react-icons/fa6";
+import { FaTwitter } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import axios from "axios";
-import { FaLinkedin } from "react-icons/fa";
-import { FaInstagram } from "react-icons/fa";
-import { useState, useEffect } from 'react';
+import { FaLinkedin, FaInstagram } from "react-icons/fa";
 import CompanyActions from './mid'; // Assuming correct import path for CompanyActions
 
-const CompanyTable = ({ companies, onDelete}) => { 
+const CompanyTable = ({ companies, onDelete }) => {
   const [csvData, setCsvData] = useState([]);
   const [count, setCount] = useState(0);
   const [deletee, setDelete] = useState([]);
@@ -22,9 +21,7 @@ const CompanyTable = ({ companies, onDelete}) => {
     setCurrentPage(pageNumber);
   };
 
-  // Calculate total pages for pagination 
-
-
+  // Calculate total pages for pagination
   const totalPages = Math.ceil(companies.length / perPage);
   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
 
@@ -39,7 +36,10 @@ const CompanyTable = ({ companies, onDelete}) => {
       setDelete(deletee.filter(id => id !== companyId));
       setSelectedCompanyIds(selectedCompanyIds.filter(id => id !== companyId));
     }
-  }; const handleHeaderCheckboxChange = (event) => {
+  };
+
+  // Function to handle header checkbox change
+  const handleHeaderCheckboxChange = (event) => {
     if (event.target.checked) {
       const allCompanyIds = companies.map(company => company._id);
       setCount(companies.length);
@@ -51,7 +51,6 @@ const CompanyTable = ({ companies, onDelete}) => {
       setSelectedCompanyIds([]);
     }
   };
-
 
   // Function to generate CSV data for selected companies
   const generateCSVData = async () => {
@@ -66,7 +65,6 @@ const CompanyTable = ({ companies, onDelete}) => {
         csvRows.push([company.domain, company.name, company.description]);
       }
 
-   
       setCsvData(csvRows);
     } catch (error) {
       console.error('Error fetching company details:', error);
@@ -88,55 +86,56 @@ const CompanyTable = ({ companies, onDelete}) => {
     }
   };
 
- 
   useEffect(() => {
     generateCSVData();
-  }, [selectedCompanyIds]); 
- 
+  }, [selectedCompanyIds]);
+
   return (
     <div>
-  
       <CompanyActions
         selectedCount={count}
         onDelete={handleDeleteClick}
         generateCSVData={generateCSVData}
         csvData={csvData}
       />
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} style={{ backgroundColor: "#FFFFFF" }}>
         <Table>
-          <TableHead>
-            <TableRow>
+          <TableHead style={{height:"34px"}}>
+            <TableRow style={{ backgroundColor: "#F9FAFB", }}>
               <TableCell><Checkbox onChange={handleHeaderCheckboxChange} /></TableCell>
-              <TableCell>COMPANY</TableCell>
-              <TableCell>SOCIAL-PROFILES</TableCell>
-              <TableCell>DESCRIPTION</TableCell>
-              <TableCell>ADDRESS</TableCell>
-              <TableCell>PHONE NO.</TableCell>
-              <TableCell>EMAIL</TableCell>
+              <TableCell></TableCell>
+              <TableCell style={{ width: "117px", maxWidth: "117px", fontWeight: "bold", color: "#6B7280" }}>COMPANY</TableCell>
+              <TableCell style={{ width: "250px", maxWidth: "250px", fontWeight: "bold", color: "#6B7280" }}>SOCIAL PROFILES</TableCell>
+              <TableCell style={{ width: "695px", maxWidth: "695px", fontWeight: "bold", color: "#6B7280" }}>DESCRIPTION</TableCell>
+              <TableCell style={{ width: "219px", maxWidth: "219px", fontWeight: "bold", color: "#6B7280" }}>ADDRESS</TableCell>
+              <TableCell style={{ width: "153px", maxWidth: "153px", fontWeight: "bold", color: "#6B7280" }}>PHONE NO.</TableCell>
+              <TableCell style={{ width: "171px", maxWidth: "171px", fontWeight: "bold", color: "#6B7280" }}>EMAIL</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
+          <TableBody style={{height:"55px"}}>
             {companies.slice(indexOfFirstCompany, indexOfLastCompany).map((company) => (
-              <TableRow key={company._id}>
-                <TableCell>
+              <TableRow key={company._id} style={{height:"55px",}} >
+                <TableCell style={{height:"45px"}}>
                   <Checkbox
                     checked={selectedCompanyIds.includes(company._id)}
                     onChange={(event) => handleCheckboxChange(event, company._id)}
                   />
                 </TableCell>
                 <TableCell>
-                  <img src={company.logo} alt="Logo" style={{ width: 50, height: 'auto' }} />
-                  <Link to={`/singlecompany/${company._id}`}>{company.name}</Link>
+                  <img src={company.logo} alt="Logo" style={{ width: "33px", height: "auto" }} />
                 </TableCell>
                 <TableCell>
-                  <a href={company.linkedin} target="_blank" rel="noopener noreferrer"><FaLinkedin /></a>
-                  <a href={company.twitter} target="_blank" rel="noopener noreferrer"><FaSquareXTwitter /></a>
-                  <a href={company.instagram} target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
+                  <Link to={`/singlecompany/${company._id}`}>{company.name}</Link>
+                </TableCell>
+                <TableCell className="social-icons">
+                  <a href={company.linkedin} target="_blank" rel="noopener noreferrer"><FaLinkedin style={{ width: "22px", height: "auto" }} /></a>
+                  <a href={company.twitter} target="_blank" rel="noopener noreferrer"><FaTwitter /></a>
+                  <a href={company.instagram} target="_blank" rel="noopener noreferrer"><FaInstagram style={{ width: "22px", height: "auto" }} /></a>
                 </TableCell>
                 <TableCell>{company.description}</TableCell>
                 <TableCell>{company.address}</TableCell>
-                <TableCell>{company.phone}</TableCell>
-                <TableCell><a href={`mailto:${company.email}`}>{company.email}</a></TableCell>
+                <TableCell>{company.phone} </TableCell>
+                <TableCell><a href={`mailto:${company.email}`} >{company.email}</a></TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -145,7 +144,7 @@ const CompanyTable = ({ companies, onDelete}) => {
 
       <div style={{ marginTop: '1rem', textAlign: 'center' }}>
         {pageNumbers.map((number) => (
-          <button key={number} onClick={() => handlePageChange(number)} style={{ margin: '0 0.5rem' }}>
+          <button key={number} onClick={() => handlePageChange(number)} style={{ margin: '0 0.5rem', backgroundColor: "#E5E7EB", color: "#1A1C1F", border: "none", padding: "0.5rem 1rem", cursor: "pointer", borderRadius: "5px" }}>
             {number}
           </button>
         ))}

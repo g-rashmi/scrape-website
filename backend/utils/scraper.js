@@ -13,13 +13,19 @@ const findUrlsByDomain = (document, domain) => {
   });
   return urls;
 };
+
 const extractCompanyName = (url) => {
-  // Example logic to extract company name from URL
-  // Replace with your own logic based on URL structure
+  // Extract company name from URL
   const urlParts = url.split('/');
   const domain = urlParts[2]; // Get the domain part from the URL
   const domainParts = domain.split('.');
-  return domainParts[0]; // Extract company name from domain (assuming domain structure is consistent)
+  return domainParts[0]; // Extract company name from domain
+};
+
+const cleanEmail = (email) => {
+  // Remove any query parameters from the email address
+  const emailParts = email.split('?');
+  return emailParts[0];
 };
 
 exports.scrape = async (url) => {
@@ -41,7 +47,7 @@ exports.scrape = async (url) => {
     if (!name) {
       name = extractCompanyName(url); // Extract company name from URL if title is not found
     }
-const domain=url;
+
     const descriptionMeta = document.querySelector('meta[name="description"]');
     const description = descriptionMeta ? descriptionMeta.content : null;
 
@@ -60,7 +66,7 @@ const domain=url;
     const phone = phoneElement ? phoneElement.textContent.trim() : null;
 
     const emailElement = document.querySelector('a[href^="mailto:"]');
-    const email = emailElement ? emailElement.href.replace('mailto:', '').trim() : null;
+    const email = emailElement ? cleanEmail(emailElement.href.replace('mailto:', '').trim()) : null;
 
     const screenshotDir = path.join(__dirname, '..', '..', 'frontend', 'public', 'screenshot');
     require('./helpers').ensureDirExists(screenshotDir);
@@ -73,7 +79,7 @@ const domain=url;
 
     return {
       name,
-      domain,
+      domain: url,
       description,
       logo,
       facebook,

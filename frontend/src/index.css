@@ -1,3 +1,87 @@
+/* index.css */
+
+/* Remove underline from all links */
 a {
-text-decoration: none;
+  text-decoration: none;
 }
+
+/* Define @font-face for Inter font */
+
+
+
+a{
+  color:#6C2BD9;
+
+}
+.social-icons a{
+  font-size: 1.3rem;
+  color:var(--Divider,#ECECEC);
+
+}
+
+.social-icons a:hover{
+  color:#6C2BD9
+}
+.social-icons {
+  padding:
+5px, 0px, 5px, 0px;
+
+} 
+
+@font-face {
+  font-family: 'Helvetica-Bold';
+  src: url('/helvetica/Helvetica-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Helvetica-BoldOblique';
+  src: url('/helvetica/Helvetica-BoldOblique.ttf') format('truetype');
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Helvetica-Compressed';
+  src: url('/helvetica/helvetica-compressed-5871d14b6903a.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Helvetica-Light';
+  src: url('/helvetica/helvetica-light-587ebe5a59211.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Helvetica-Oblique';
+  src: url('/helvetica/Helvetica-Oblique.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Helvetica-Rounded-Bold';
+  src: url('/helvetica/helvetica-rounded-bold-5871d05ead8de.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+} 
+*{
+  font-family: 'Helvetica-Light'
+}
+body {
+  font-family: 'Helvetica'
+}
+
+h1, h2, h3 {
+  font-family: 'Helvetica-Bold';
+}
+
+.italic-text {
+  font-family: 'Helvetica-Oblique';
+  font-style: italic;
+}
+
+
