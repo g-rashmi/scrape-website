@@ -1,6 +1,4 @@
-﻿
-
-# Scrape
+# Scrape Website
 ## Local Setup Instructions
 
 ### Prerequisites
@@ -30,7 +28,6 @@
      ```bash
      cd ../frontend
      npm install
-     npm run dev
      ```
 
 3. **Configure MongoDB URL**
@@ -49,29 +46,37 @@
      };
      ```
 
-4. **Start Development Servers**
+4. **Configure Backend URL in Frontend**
+
+   - Navigate to the `config.js` file inside the frontend/src/components directory.
+
+     ```bash
+     cd ../frontend/src/components
+     ```
+
+   - Open `config.js` file in a text editor and ensure the `backend_url` is set to `http://localhost:4000`.
+
+     ```javascript
+     export const backend_url = 'http://localhost:4000';
+     ```
+
+5. **Start Development Servers**
 
    - Start the backend server (from the backend directory):
 
-     ```terminal
+     ```bash
      npm run start
      ```
 
-     This will concurrently start both the backend server (using nodemon) and the frontend server (using React scripts).
+     This will start the backend server at `http://localhost:4000`.
 
-5. **Access the Application**
+   - Start the frontend server (from the frontend directory):
 
-   - Once both servers are running, you can access the application in your web browser at:
-
-     ```
-     http://localhost:5173
+     ```bash
+     npm run start
      ```
 
-   - The backend server will be running at:
-
-     ```
-     http://localhost:4000
-     ```
+     This will start the frontend server and automatically open the application in your default web browser at `http://localhost:3000`.
 
 6. **Stopping the Servers**
 
@@ -81,6 +86,4 @@
 
 - Ensure MongoDB is running and accessible with the provided connection URL in `config.js`.
 - If you encounter any issues, please check the console logs for error messages and ensure all dependencies are correctly installed.
-
----
 
