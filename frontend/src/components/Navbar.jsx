@@ -13,8 +13,8 @@ import { useNavigate } from "react-router-dom";
 import { Search as SearchIcon } from "@mui/icons-material";
 import axios from "axios";
 import { backend_url } from "./config";
-const Navbar = ({ d, show }) => {
-  const [domain, setDomain] = useState(d);
+const Navbar = ({ show}) => {
+  const [domain, setDomain] = useState("");
   const [loading, setLoading] = useState(false);
   const [companies, setCompanies] = useState([]);
   const navigate = useNavigate();
@@ -39,7 +39,9 @@ const Navbar = ({ d, show }) => {
       setDomain("");
       console.log("Response data:", response.data);
     } catch (error) {
-      alert("Internal server error. Please try again later."); // Alert user on internal server error
+      
+      console.log(error)
+      alert(error); // Alert user on internal server error
       setLoading(false);
       setDomain("");
       navigate("/");

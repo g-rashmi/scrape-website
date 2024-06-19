@@ -18,7 +18,8 @@ exports.scrapeCompany = async (req, res) => {
     return res.status(400).json({ error: 'URL parameter is required' });
   } 
 
-  try {
+  try { 
+    
     const companyData = await scraper.scrape(url);
     companyData._id = new mongoose.Types.ObjectId();
 

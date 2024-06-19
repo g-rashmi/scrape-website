@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar'
 function Home() {
   return (
     <div>
-      <Navbar d="" show={true}/> 
+      <Navbar show={true}/> 
       
     </div>
   )
