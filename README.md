@@ -76,7 +76,7 @@
      npm run start
      ```
 
-     This will start the frontend server and automatically open the application in your default web browser at `http://localhost:3000`.
+     This will start the frontend server and automatically open the application in your default web browser at `http://localhost:5173`.
 
 6. **Stopping the Servers**
 
