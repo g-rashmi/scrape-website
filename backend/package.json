@@ -1,9 +1,10 @@
-{
+={
   "name": "backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "postinstall": "node node_modules/puppeteer/install.js"
   },
   "keywords": [],
