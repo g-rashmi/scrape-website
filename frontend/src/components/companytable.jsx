@@ -126,7 +126,7 @@ const CompanyTable = ({ companies, onDelete }) => {
                   <img src={company.logo} alt="Logo" style={{ width: "33px", height: "auto" }} />
                 </TableCell>
                 <TableCell>
-                  <Link to={`/singlecompany/${company._id}`}>{company.name}</Link>
+                  <Link to={`/singlecompany/${company._id}`}>{company.name} </Link>
                 </TableCell>
                 <TableCell className="social-icons">
                   <a href={company.linkedin} target="_blank" rel="noopener noreferrer"><FaLinkedin style={{ width: "22px", height: "auto" }} /></a>

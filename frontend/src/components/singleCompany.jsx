@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { LuMailSearch, LuPhoneCall, LuGlobe2, LuLinkedin } from "react-icons/lu";
+import { backend_url } from './config';
 import { CiCamera } from "react-icons/ci";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { FiFacebook, FiTwitter } from "react-icons/fi";
@@ -75,7 +76,7 @@ const SingleCompany = () => {
   useEffect(() => {
     const fetchCompany = async () => {
       try {
-        const response = await axios.get(`http://localhost:4000/api/company/${id}`);
+        const response = await axios.get(`${backend_url}/api/company/${id}`);
         setCompany(response.data.company);
         setLoading(false);
       } catch (error) {
