@@ -31,7 +31,7 @@ const cleanEmail = (email) => {
 exports.scrape = async (url) => {
   let browser;
   try {
-    browser = await puppeteer.launch({ headless: true });
+    browser = await puppeteer.launch({ headless: true,args: ['--no-sandbox', '--disable-setuid-sandbox']  });
     const page = await browser.newPage();
 
     await page.goto(url, {
@@ -45,7 +45,7 @@ exports.scrape = async (url) => {
 
     let name = document.querySelector('head title')?.textContent.split(' ')[0].trim();
     if (!name) {
-      name = extractCompanyName(url); // Extract company name from URL if title is not found
+      name = extractCompanyName(url); 
     }
 
     const descriptionMeta = document.querySelector('meta[name="description"]');

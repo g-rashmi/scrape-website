@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start":"npx puppeteer browsers install chrome@123.0.6312.122&&nodemon index",
+    "start":"npx puppeteer browsers install chrome && nodemon index",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
