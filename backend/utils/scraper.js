@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const { JSDOM } = require('jsdom');
 const path = require('path');
-
+require("dotenv").config
 const findUrlsByDomain = (document, domain) => {
   const urls = [];
   const elements = document.querySelectorAll('a[href], [href], [src]');
@@ -29,11 +29,16 @@ const cleanEmail = (email) => {
 };
 
 exports.scrape = async (url) => {
-  let browser;
+  const browser = await puppeteer.launch({ headless: true,args: ['--no-sandbox', '--disable-setuid-sandbox','--single-process','--no-zygote'] , executablePath:
+    process.env.NODE_ENV === "production"
+      ? process.env.PUPPETEER_EXECUTABLE_PATH
+      : puppeteer.executablePath(),
+ });
   try {
-    browser = await puppeteer.launch({ headless: true,args: ['--no-sandbox', '--disable-setuid-sandbox']  });
+  
+   
     const page = await browser.newPage();
-
+  
     await page.goto(url, {
       waitUntil: 'networkidle0',
       timeout: 0,
@@ -75,8 +80,6 @@ exports.scrape = async (url) => {
 
     await page.screenshot({ path: screenshotPath });
 
-    await browser.close();
-
     return {
       name,
       domain: url,
@@ -93,10 +96,12 @@ exports.scrape = async (url) => {
     };
   } catch (error) {
     console.error('Error during scraping:', error);
-    throw error; // Re-throw the error to handle upstream
+    res.send('something went wrong '+error)
+    throw error; 
+
   } finally {
-    if (browser) {
+    
       await browser.close();
-    }
+    
   }
 };
