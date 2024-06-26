@@ -1,10 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const path = require('path');
 const cors=require('cors');
 const dotenv = require('dotenv');
-const companyRoutes = require('./routes/index');const fs = require('fs');
+const companyRoutes = require('./routes/index');
 
 // Load environment variables
 dotenv.config();
@@ -25,15 +24,6 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
 // Routes
 app.use('/api', companyRoutes);
 
-// Ensure the screenshots and downloads directories exist
-const ensureDirExists = (dir) => {
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
-  }
-};
-
-ensureDirExists(path.join(__dirname, '../screenshots'));
-ensureDirExists(path.join(__dirname, '../downloads'));
 
 // Start server
 app.listen(PORT, () => {

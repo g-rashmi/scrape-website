@@ -27,9 +27,9 @@ exports.scrapeCompany = async (req, res) => {
     await company.save();
      res.json({companyid: companyData._id })
   } catch (error) {
-    console.error('Error scraping page:', error);  process.exit(1) 
-    
-    res.status(500).json({ error: 'Failed to scrape page' });
+    console.error('Error scraping page:', error); 
+   res.status(500).json({ error: 'Failed to scrape page' });
+   process.exit(1) 
   }
 };
 

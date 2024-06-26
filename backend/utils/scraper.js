@@ -1,7 +1,12 @@
 const puppeteer = require('puppeteer');
 const { JSDOM } = require('jsdom');
 const path = require('path');
-require("dotenv").config
+require('dotenv').config();
+
+function bufferToBase64(buffer) {
+  return buffer.toString('base64');
+}
+
 const findUrlsByDomain = (document, domain) => {
   const urls = [];
   const elements = document.querySelectorAll('a[href], [href], [src]');
@@ -15,28 +20,33 @@ const findUrlsByDomain = (document, domain) => {
 };
 
 const extractCompanyName = (url) => {
-  // Extract company name from URL
   const urlParts = url.split('/');
-  const domain = urlParts[2]; // Get the domain part from the URL
+  const domain = urlParts[2];
   const domainParts = domain.split('.');
-  return domainParts[0]; // Extract company name from domain
+  return domainParts[0];
 };
 
 const cleanEmail = (email) => {
-  // Remove any query parameters from the email address
   const emailParts = email.split('?');
   return emailParts[0];
 };
 
 exports.scrape = async (url) => {
-  const browser = await puppeteer.launch({ headless: true,args: ['--no-sandbox', '--disable-setuid-sandbox','--single-process','--no-zygote'] , executablePath:
-   puppeteer.executablePath(),
- });
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--single-process', '--no-zygote'],
+    executablePath: puppeteer.executablePath(),
+  });
   try {
-  
-   
     const page = await browser.newPage();
-  
+    page.on('console', msg => {
+      if (!msg.text().includes('Failed to load resource: the server responded with a status of') &&
+          !msg.text().includes('css') &&
+          !msg.text().includes('stylesheet')) {
+        console.log('PAGE LOG:', msg.text());
+      }
+    });
+
     await page.goto(url, {
       waitUntil: 'networkidle0',
       timeout: 0,
@@ -48,7 +58,7 @@ exports.scrape = async (url) => {
 
     let name = document.querySelector('head title')?.textContent.split(' ')[0].trim();
     if (!name) {
-      name = extractCompanyName(url); 
+      name = extractCompanyName(url);
     }
 
     const descriptionMeta = document.querySelector('meta[name="description"]');
@@ -71,12 +81,8 @@ exports.scrape = async (url) => {
     const emailElement = document.querySelector('a[href^="mailto:"]');
     const email = emailElement ? cleanEmail(emailElement.href.replace('mailto:', '').trim()) : null;
 
-    const screenshotDir = path.join(__dirname, '..', '..', 'frontend', 'public', 'screenshot');
-    require('./helpers').ensureDirExists(screenshotDir);
-    const screenshotPath = path.join(screenshotDir, `${Date.now()}.png`);
-    const screenshotRelativePath = `../screenshot/${Date.now()}.png`;
-
-    await page.screenshot({ path: screenshotPath });
+    const imageBuffer = await page.screenshot();
+    const base64Image = bufferToBase64(imageBuffer);
 
     return {
       name,
@@ -90,16 +96,13 @@ exports.scrape = async (url) => {
       address,
       phone,
       email,
-      screenshot: screenshotRelativePath,
+      screenshot: `data:image/png;base64,${base64Image}`, // Include the image type
     };
   } catch (error) {
     console.error('Error during scraping:', error);
-    res.send('something went wrong '+error)
-    throw error; 
-
+    throw error;
   } finally {
-    
-      await browser.close();
-    
+    await browser.close();
   }
 };
+ 
