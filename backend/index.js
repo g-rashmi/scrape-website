@@ -10,7 +10,7 @@ const companyRoutes = require('./routes/index');const fs = require('fs');
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 400;
 
 // Middleware
 app.use(cors())

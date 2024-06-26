@@ -5,7 +5,7 @@ const company=require('../models/company')
 router.post('/scrape', companyController.scrapeCompany);
 
 router.get('/company/:id', companyController.getCompanyDetails);
-router.post('/delete', companyController.deleteCompanies);
+router.post('/delete', companyController.deleteCompanies); 
 
  
 
