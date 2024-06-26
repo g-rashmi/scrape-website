@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const cors=require('cors');
 const dotenv = require('dotenv');
 const companyRoutes = require('./routes/index');
-
+const serverless = require('serverless-http');
 // Load environment variables
 dotenv.config();
 
@@ -29,3 +29,4 @@ app.use('/api', companyRoutes);
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+module.exports.handler = serverless(app);

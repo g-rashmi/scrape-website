@@ -1,4 +1,5 @@
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
+const chromium = require('@sparticuz/chromium');
 const { JSDOM } = require('jsdom');
 const path = require('path');
 require('dotenv').config();
@@ -33,9 +34,11 @@ const cleanEmail = (email) => {
 
 exports.scrape = async (url) => {
   const browser = await puppeteer.launch({
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--single-process', '--no-zygote'],
-    executablePath: puppeteer.executablePath(),
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport,
+    executablePath: await chromium.executablePath(),
+    headless: chromium.headless,
+    ignoreHTTPSErrors: true,
   });
   try {
     const page = await browser.newPage();
