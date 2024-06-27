@@ -5,7 +5,16 @@ import { Link } from 'react-router-dom';
 import axios from "axios";
 import { FaLinkedin, FaInstagram } from "react-icons/fa";
 import { backend_url } from './config';
-import CompanyActions from './mid'; // Assuming correct import path for CompanyActions
+import CompanyActions from './mid'; 
+import {
+  AppBar,
+  Toolbar,
+  TextField,
+  Button,
+  IconButton,
+  CircularProgress,
+  Grid,
+} from "@mui/material";
 
 const CompanyTable = ({ companies, onDelete }) => {
   const [csvData, setCsvData] = useState([]);
@@ -13,13 +22,14 @@ const CompanyTable = ({ companies, onDelete }) => {
   const [deletee, setDelete] = useState([]);
   const [selectedCompanyIds, setSelectedCompanyIds] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
   const [perPage] = useState(20);
   const indexOfLastCompany = currentPage * perPage;
   const indexOfFirstCompany = indexOfLastCompany - perPage;
 
   // Function to handle page change
   const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
+    setCurrentPage(pageNumber); 
   };
 
   // Calculate total pages for pagination
@@ -58,18 +68,19 @@ const CompanyTable = ({ companies, onDelete }) => {
     try {
       const csvRows = [['Domain', 'Name', 'Description']]; // CSV header
 
-      // Fetch details for each selected company ID
+    
       for (const id of selectedCompanyIds) {
         const response = await axios.get(`${backend_url}/api/company/${id}`);
         const company = response.data.company; // Assuming your API response structure
-
+        setLoading(false);
         csvRows.push([company.domain, company.name, company.description]);
+
       }
 
-      setCsvData(csvRows);
+      setCsvData(csvRows); setLoading(false);
     } catch (error) {
-      console.error('Error fetching company details:', error);
-      // Handle error (e.g., show error message to user)
+      console.error('Error fetching company details:', error);  setLoading(false);
+
     }
   };
 
@@ -114,7 +125,9 @@ const CompanyTable = ({ companies, onDelete }) => {
             </TableRow>
           </TableHead>
           <TableBody style={{height:"55px"}}>
-            {companies.slice(indexOfFirstCompany, indexOfLastCompany).map((company) => (
+            {loading? (<Grid container justifyContent="center" alignItems="center" minHeight="100vh">
+              <CircularProgress />
+            </Grid>):(companies.slice(indexOfFirstCompany, indexOfLastCompany).map((company) => (
               <TableRow key={company._id} style={{height:"55px",}} >
                 <TableCell style={{height:"5px"}}>
                   <Checkbox
@@ -138,7 +151,7 @@ const CompanyTable = ({ companies, onDelete }) => {
                 <TableCell>{company.phone} </TableCell>
                 <TableCell><a href={`mailto:${company.email}`} >{company.email}</a></TableCell>
               </TableRow>
-            ))}
+  )))}  
           </TableBody>
         </Table>
       </TableContainer>

@@ -21,10 +21,11 @@ const Navbar = ({ show}) => {
   const handleDomainChange = (event) => {
     setDomain(event.target.value);
   };
-
+const[loader,setloader] =useState(false) ;
   useEffect(() => {
     axios.get(`${backend_url}/api/bulk?filter=` + domain).then((response) => {
-      setCompanies(response.data.companies);
+      setCompanies(response.data.companies); 
+      setloader(true)
     });
   }, [domain]);
 
@@ -34,7 +35,7 @@ const Navbar = ({ show}) => {
       const response = await axios.post(`${backend_url}/api/scrape`, {
         domain,
       });
-      setLoading(false); // Set loading to false immediately upon successful response
+      setLoading(); // Set loading to false immediately upon successful response
       navigate(`/singlecompany/${response.data.companyid}`);
       setDomain("");
       console.log("Response data:", response.data);
@@ -103,7 +104,21 @@ const Navbar = ({ show}) => {
           <CircularProgress />
         </Grid>
       ) : (
-        show && <CompanyTable companies={companies} onDelete={handleDelete} />
+        show ? (
+          loader ? (
+            <CompanyTable companies={companies} onDelete={handleDelete} />
+          ) : (
+            <Grid
+              container
+              justifyContent="center"
+              alignItems="center"
+              style={{ minHeight: "80vh" }}
+            >
+              <CircularProgress />
+            </Grid>
+          )
+        ) : null
+        
       )}
     </div>
   );
