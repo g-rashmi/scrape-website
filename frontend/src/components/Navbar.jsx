@@ -24,7 +24,7 @@ const Navbar = ({ show}) => {
 const[loader,setloader] =useState(false) ;
   useEffect(() => {
     axios.get(`${backend_url}/api/bulk?filter=` + domain).then((response) => {
-      setCompanies(response.data.companies); 
+     console.log(response); setCompanies(response.data.companies); 
       setloader(true)
     });
   }, [domain]);
@@ -32,13 +32,22 @@ const[loader,setloader] =useState(false) ;
   const handleFetchData = async () => {
     setLoading(true);
     try {
+    
+      if (companies) {   
+        alert("already fetched")
+        setLoading(false); 
+      setDomain("");
+        }
+      else{
       const response = await axios.post(`${backend_url}/api/scrape`, {
         domain,
-      });
-      setLoading(); // Set loading to false immediately upon successful response
+      }); 
+    
+      setLoading(false); 
       navigate(`/singlecompany/${response.data.companyid}`);
       setDomain("");
       console.log("Response data:", response.data);
+    }
     } catch (error) {
       
       console.log(error)
