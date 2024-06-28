@@ -21,6 +21,17 @@ const Navbar = ({ show}) => {
   const handleDomainChange = (event) => {
     setDomain(event.target.value);
   };
+  function isValidDomain(domain) {
+    // Regular expression to match domain name format
+    const domainRegex = /^[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z]{2,})+$/;
+  
+    // Check if the domain matches the regex pattern
+    if (domainRegex.test(domain)) {
+      return true; // Valid domain
+    } else {
+      return false; // Invalid domain
+    }
+  }
 const[loader,setloader] =useState(false) ;
   useEffect(() => {
     axios.get(`${backend_url}/api/bulk?filter=` + domain).then((response) => {
@@ -33,6 +44,18 @@ const[loader,setloader] =useState(false) ;
     setLoading(true);
     try {
       
+    if( isValidDomain(domain)===false){
+      alert("invalid-domain");
+      setLoading(false);
+      setDomain("");
+      show=true; 
+      navigate("/"); 
+    }  
+    else if(companies.length!==0){
+      alert("COMPANY ALREADY FETCHED");
+      show=true;   setLoading(false);
+    }
+    else{
       const response = await axios.post(`${backend_url}/api/scrape`, {
         domain,
       }); 
@@ -42,14 +65,16 @@ const[loader,setloader] =useState(false) ;
       setDomain("");
       console.log("Response data:", response.data);
     }
+  }
     catch (error) {
       
       console.log(error)
-      alert(error); 
+      alert("retry-error in fetching"); 
       setLoading(false);
       setDomain("");
-      navigate("/");
       show = true;
+      navigate("/");
+     
       console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
