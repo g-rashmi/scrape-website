@@ -51,7 +51,7 @@ exports.scrape = async (url) => {
 
     await page.goto(url, {
       waitUntil: 'networkidle0',
-     timeout: 60000, 
+      timeout: 0,
     });
 
     const pageContent = await page.content();
