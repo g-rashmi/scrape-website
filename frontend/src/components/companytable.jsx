@@ -7,11 +7,7 @@ import { FaLinkedin, FaInstagram } from "react-icons/fa";
 import { backend_url } from './config';
 import CompanyActions from './mid'; 
 import {
-  AppBar,
-  Toolbar,
-  TextField,
-  Button,
-  IconButton,
+
   CircularProgress,
   Grid,
 } from "@mui/material";
@@ -23,7 +19,7 @@ const CompanyTable = ({ companies, onDelete }) => {
   const [selectedCompanyIds, setSelectedCompanyIds] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [perPage] = useState(20);
+  const [perPage] = useState(5);
   const indexOfLastCompany = currentPage * perPage;
   const indexOfFirstCompany = indexOfLastCompany - perPage;
 
