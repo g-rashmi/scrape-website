@@ -19,8 +19,8 @@ const CompanyTable = ({ companies, onDelete }) => {
   const [selectedCompanyIds, setSelectedCompanyIds] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [perPage] = useState(5);
-  const indexOfLastCompany = currentPage * perPage;
+  const [perPage] = useState(5); 
+  const indexOfLastCompany = currentPage * perPage; 
   const indexOfFirstCompany = indexOfLastCompany - perPage;
 
   // Function to handle page change
