@@ -50,7 +50,7 @@ exports.scrape = async (url) => {
     });
 
     await page.goto(url, {
-      waitUntil: 'networkidle0',
+      waitUntil: 'domcontentloaded',
       timeout: 0,
     });
 
