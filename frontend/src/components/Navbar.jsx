@@ -45,7 +45,7 @@ const[loader,setloader] =useState(false) ;
     catch (error) {
       
       console.log(error)
-      alert(error); // Alert user on internal server error
+      alert(error); 
       setLoading(false);
       setDomain("");
       navigate("/");
