@@ -1,8 +1,5 @@
 const Company = require('../models/company');
-const scraper = require('../utils/scraper');
-const json2csv = require('json2csv').parse;
-const fs = require('fs');
-const path = require('path');
+const scraper = require('../utils/scraper') ;
 const mongoose=require("mongoose") 
 const convertDomainToUrl = (domain) => {
   if (!domain.startsWith('http://') && !domain.startsWith('https://')) {

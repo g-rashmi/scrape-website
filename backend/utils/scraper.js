@@ -1,7 +1,6 @@
 const puppeteer = require('puppeteer-core');
 const chromium = require('@sparticuz/chromium');
-const { JSDOM } = require('jsdom');
-const path = require('path');
+const { JSDOM } = require('jsdom'); 
 require('dotenv').config();
 
 function bufferToBase64(buffer) {
@@ -99,13 +98,13 @@ exports.scrape = async (url) => {
       address,
       phone,
       email,
-      screenshot: `data:image/png;base64,${base64Image}`, // Include the image type
+      screenshot: `data:image/png;base64,${base64Image}`, 
     };
   } catch (error) {
     console.error('Error during scraping:', error);
     throw error;
   } finally {
-    await browser.close();
+    await browser.close(); 
   }
 };
  
