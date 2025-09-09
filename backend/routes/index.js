@@ -7,7 +7,7 @@ router.post('/scrape', companyController.scrapeCompany);
 router.get('/company/:id', companyController.getCompanyDetails);
 router.post('/delete', companyController.deleteCompanies); 
 
- 
+ console.log("hii this is me")
 
 router.get("/bulk", async (req, res) => {
   const filter = req.query.filter || ""; 
