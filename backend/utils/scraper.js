@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer-core');
 const chromium = require('@sparticuz/chromium');
-const { JSDOM } = require('jsdom'); 
+const { JSDOM } = require('jsdom');
 require('dotenv').config();
 
 function bufferToBase64(buffer) {
@@ -10,8 +10,9 @@ function bufferToBase64(buffer) {
 const findUrlsByDomain = (document, domain) => {
   const urls = [];
   const elements = document.querySelectorAll('a[href], [href], [src]');
-  elements.forEach(element => {
-    const attributeValue = element.href || element.src || element.getAttribute('href');
+  elements.forEach((element) => {
+    const attributeValue =
+      element.href || element.src || element.getAttribute('href');
     if (attributeValue && attributeValue.toLowerCase().includes(domain)) {
       urls.push(attributeValue.trim());
     }
@@ -41,10 +42,16 @@ exports.scrape = async (url) => {
   });
   try {
     const page = await browser.newPage();
-    page.on('console', msg => {
-      if (!msg.text().includes('Failed to load resource: the server responded with a status of') &&
-          !msg.text().includes('css') &&
-          !msg.text().includes('stylesheet')) {
+    page.on('console', (msg) => {
+      if (
+        !msg
+          .text()
+          .includes(
+            'Failed to load resource: the server responded with a status of',
+          ) &&
+        !msg.text().includes('css') &&
+        !msg.text().includes('stylesheet')
+      ) {
         console.log('PAGE LOG:', msg.text());
       }
     });
@@ -58,7 +65,10 @@ exports.scrape = async (url) => {
     const dom = new JSDOM(pageContent);
     const document = dom.window.document;
 
-    let name = document.querySelector('head title')?.textContent.split(' ')[0].trim();
+    let name = document
+      .querySelector('head title')
+      ?.textContent.split(' ')[0]
+      .trim();
     if (!name) {
       name = extractCompanyName(url);
     }
@@ -66,7 +76,9 @@ exports.scrape = async (url) => {
     const descriptionMeta = document.querySelector('meta[name="description"]');
     const description = descriptionMeta ? descriptionMeta.content : null;
 
-    const logoLink = document.querySelector('link[rel="shortcut icon"], link[rel="icon"]');
+    const logoLink = document.querySelector(
+      'link[rel="shortcut icon"], link[rel="icon"]',
+    );
     const logo = logoLink ? logoLink.href : null;
 
     const facebook = findUrlsByDomain(document, 'facebook.com')[0] || null;
@@ -81,7 +93,9 @@ exports.scrape = async (url) => {
     const phone = phoneElement ? phoneElement.textContent.trim() : null;
 
     const emailElement = document.querySelector('a[href^="mailto:"]');
-    const email = emailElement ? cleanEmail(emailElement.href.replace('mailto:', '').trim()) : null;
+    const email = emailElement
+      ? cleanEmail(emailElement.href.replace('mailto:', '').trim())
+      : null;
 
     const imageBuffer = await page.screenshot();
     const base64Image = bufferToBase64(imageBuffer);
@@ -98,13 +112,12 @@ exports.scrape = async (url) => {
       address,
       phone,
       email,
-      screenshot: `data:image/png;base64,${base64Image}`, 
+      screenshot: `data:image/png;base64,${base64Image}`,
     };
   } catch (error) {
     console.error('Error during scraping:', error);
     throw error;
   } finally {
-    await browser.close(); 
+    await browser.close();
   }
 };
- 

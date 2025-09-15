@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const cors=require('cors');
+const cors = require('cors');
 const dotenv = require('dotenv');
 const companyRoutes = require('./routes/index');
 const serverless = require('serverless-http');
@@ -12,18 +12,23 @@ const app = express();
 const PORT = process.env.PORT || 400;
 
 // Middleware
-app.use(cors())
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // MongoDB setup
-mongoose.connect(process.env.MONGODB_URI).then(() => {
-  console.log('MongoDB connected');
-}).catch(err => console.log(err));
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log('MongoDB connected');
+  })
+  .catch((err) => console.log(err));
 
+app.get('/', (req, res) => {
+  res.send('api is running');
+});
 // Routes
 app.use('/api', companyRoutes);
-
 
 // Start server
 app.listen(PORT, () => {
