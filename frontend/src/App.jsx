@@ -4,7 +4,8 @@ import Home from './page/Home';
 import SingleCompany from './components/singleCompany';
 
 const App = () => {
-const name="hii"
+
+console.log("hello, am rashmi");
   return (
     <Router>
       <Routes>
