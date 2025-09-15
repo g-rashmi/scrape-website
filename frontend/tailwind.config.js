@@ -7,5 +7,5 @@ export default { content: [
     extend: {},
   },
   plugins: [],
-}
+};
 
